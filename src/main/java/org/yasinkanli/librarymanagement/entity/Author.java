@@ -1,5 +1,6 @@
 package org.yasinkanli.librarymanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -12,6 +13,7 @@ public class Author {
     private String name;
 
     @ManyToMany(mappedBy = "authors")
+    @JsonBackReference
     private Set<Book> books;
 
     public Long getId() {

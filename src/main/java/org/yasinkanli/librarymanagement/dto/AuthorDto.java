@@ -1,14 +1,18 @@
 package org.yasinkanli.librarymanagement.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MemberResponseDto {
-
+public class AuthorDto {
     private Long id;
+
+    @NotBlank(message = "Author name is required")
     private String name;
-    private Long cardId;
-    private String cardNumber;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<BookDto> books;
 
     public Long getId() {
         return id;
@@ -26,19 +30,11 @@ public class MemberResponseDto {
         this.name = name;
     }
 
-    public Long getCardId() {
-        return cardId;
+    public Set<BookDto> getBooks() {
+        return books;
     }
 
-    public void setCardId(Long cardId) {
-        this.cardId = cardId;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setBooks(Set<BookDto> books) {
+        this.books = books;
     }
 }

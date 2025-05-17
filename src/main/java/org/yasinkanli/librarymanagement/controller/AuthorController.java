@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yasinkanli.librarymanagement.dto.AuthorRequestDto;
-import org.yasinkanli.librarymanagement.dto.AuthorResponseDto;
+import org.yasinkanli.librarymanagement.dto.AuthorDto;
 import org.yasinkanli.librarymanagement.service.AuthorService;
 import org.yasinkanli.librarymanagement.web.ApiResponse;
 
@@ -20,30 +19,30 @@ public class AuthorController {
     private AuthorService authorService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<AuthorResponseDto>> createAuthor(@Valid @RequestBody AuthorRequestDto dto) {
-        AuthorResponseDto created = authorService.create(dto);
-        ApiResponse<AuthorResponseDto> response = new ApiResponse<>(true, "Author created successfully", created);
+    public ResponseEntity<ApiResponse<AuthorDto>> createAuthor(@Valid @RequestBody AuthorDto dto) {
+        AuthorDto created = authorService.create(dto);
+        ApiResponse<AuthorDto> response = new ApiResponse<>(true, "Author created successfully", created);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<AuthorResponseDto>> getAuthorById(@PathVariable Long id) {
-        AuthorResponseDto author = authorService.getById(id);
-        ApiResponse<AuthorResponseDto> response = new ApiResponse<>(true, "Author retrieved successfully", author);
+    public ResponseEntity<ApiResponse<AuthorDto>> getAuthorById(@PathVariable Long id) {
+        AuthorDto author = authorService.getById(id);
+        ApiResponse<AuthorDto> response = new ApiResponse<>(true, "Author retrieved successfully", author);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/listAll")
-    public ResponseEntity<ApiResponse<List<AuthorResponseDto>>> listAuthors() {
-        List<AuthorResponseDto> authors = authorService.listAll();
-        ApiResponse<List<AuthorResponseDto>> response = new ApiResponse<>(true, "Authors listed successfully", authors);
+    public ResponseEntity<ApiResponse<List<AuthorDto>>> listAuthors() {
+        List<AuthorDto> authors = authorService.listAll();
+        ApiResponse<List<AuthorDto>> response = new ApiResponse<>(true, "Authors listed successfully", authors);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<AuthorResponseDto>> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorRequestDto dto) {
-        AuthorResponseDto updated = authorService.update(id, dto);
-        ApiResponse<AuthorResponseDto> response = new ApiResponse<>(true, "Author updated successfully", updated);
+    public ResponseEntity<ApiResponse<AuthorDto>> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorDto dto) {
+        AuthorDto updated = authorService.update(id, dto);
+        ApiResponse<AuthorDto> response = new ApiResponse<>(true, "Author updated successfully", updated);
         return ResponseEntity.ok(response);
     }
 

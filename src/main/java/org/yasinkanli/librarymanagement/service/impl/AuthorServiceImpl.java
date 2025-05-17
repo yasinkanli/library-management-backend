@@ -3,8 +3,7 @@ package org.yasinkanli.librarymanagement.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yasinkanli.librarymanagement.dto.AuthorRequestDto;
-import org.yasinkanli.librarymanagement.dto.AuthorResponseDto;
+import org.yasinkanli.librarymanagement.dto.AuthorDto;
 import org.yasinkanli.librarymanagement.entity.Author;
 import org.yasinkanli.librarymanagement.mapper.GenericMapper;
 import org.yasinkanli.librarymanagement.repository.AuthorRepository;
@@ -22,31 +21,37 @@ public class AuthorServiceImpl implements AuthorService {
     private GenericMapper mapper;
 
     @Override
-    public AuthorResponseDto create(AuthorRequestDto dto) {
+    public AuthorDto create(AuthorDto dto) {
         Author entity2 = mapper.map(dto, Author.class);
         Author saved = authorRepository.save(entity2);
-        return mapper.map(saved, AuthorResponseDto.class);
+        return mapper.map(saved, AuthorDto.class);
     }
 
     @Override
-    public AuthorResponseDto getById(Long id) {
+    public AuthorDto getById(Long id) {
         Author entity = authorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Author not found with id: " + id));
-        return mapper.map(entity, AuthorResponseDto.class);
+        return mapper.map(entity, AuthorDto.class);
     }
 
     @Override
-    public List<AuthorResponseDto> listAll() {
-        return mapper.mapList(authorRepository.findAll(), AuthorResponseDto.class);
+    public List<AuthorDto> listAll() {
+        List<AuthorDto> list = mapper.mapList(authorRepository.findAll(), AuthorDto.class);
+        list.forEach(author -> {
+            if (author.getBooks() != null) {
+                author.getBooks().forEach(book -> book.setAuthors(null));
+            }
+        });
+        return list;
     }
 
     @Override
-    public AuthorResponseDto update(Long id, AuthorRequestDto dto) {
+    public AuthorDto update(Long id, AuthorDto dto) {
         Author existing = authorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Author not found with id: " + id));
         existing.setName(dto.getName());
         Author updated = authorRepository.save(existing);
-        return mapper.map(updated, AuthorResponseDto.class);
+        return mapper.map(updated, AuthorDto.class);
     }
 
     @Override

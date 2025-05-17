@@ -1,15 +1,14 @@
 package org.yasinkanli.librarymanagement.service;
 
-import org.yasinkanli.librarymanagement.dto.BookRequestDto;
-import org.yasinkanli.librarymanagement.dto.BookResponseDto;
+import org.yasinkanli.librarymanagement.dto.BookDto;
 
 import java.util.List;
 
 public interface BookService {
-    BookResponseDto create(BookRequestDto dto);
-    BookResponseDto getById(Long id);
-    List<BookResponseDto> listAll();
+    BookDto create(BookDto dto);
+    BookDto getById(Long id);
+    List<BookDto> listAll();
     void delete(Long id);
-    BookResponseDto update(Long id,BookRequestDto dto);
-    List<BookResponseDto> searchByTitle(String title);
+    BookDto update(Long id,BookDto dto);
+    List<BookDto> searchByTitle(String title);
 }

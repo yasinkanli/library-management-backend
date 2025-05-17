@@ -1,15 +1,15 @@
 package org.yasinkanli.librarymanagement.service;
 
-import org.yasinkanli.librarymanagement.dto.MemberRequestDto;
-import org.yasinkanli.librarymanagement.dto.MemberResponseDto;
+import org.yasinkanli.librarymanagement.dto.MemberDto;
+import org.yasinkanli.librarymanagement.dto.MemberDto;
 
 import java.util.List;
 
 public interface MemberService {
-    MemberResponseDto create(MemberRequestDto dto);
-    MemberResponseDto getById(Long id);
-    List<MemberResponseDto> listAll();
-    List<MemberResponseDto> searchByName(String name);
-    MemberResponseDto update(Long id, MemberRequestDto dto);
+    MemberDto create(MemberDto dto);
+    MemberDto getById(Long id);
+    List<MemberDto> listAll();
+    List<MemberDto> searchByName(String name);
+    MemberDto update(Long id, MemberDto dto);
     void delete(Long id);
 }

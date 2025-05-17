@@ -1,14 +1,14 @@
 package org.yasinkanli.librarymanagement.service;
 
-import org.yasinkanli.librarymanagement.dto.AuthorRequestDto;
-import org.yasinkanli.librarymanagement.dto.AuthorResponseDto;
+import org.yasinkanli.librarymanagement.dto.AuthorDto;
+import org.yasinkanli.librarymanagement.dto.AuthorDto;
 
 import java.util.List;
 
 public interface AuthorService {
-    AuthorResponseDto create(AuthorRequestDto dto);
-    AuthorResponseDto getById(Long id);
-    List<AuthorResponseDto> listAll();
-    AuthorResponseDto update(Long id, AuthorRequestDto dto);
+    AuthorDto create(AuthorDto dto);
+    AuthorDto getById(Long id);
+    List<AuthorDto> listAll();
+    AuthorDto update(Long id, AuthorDto dto);
     void delete(Long id);
 }

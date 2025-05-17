@@ -4,8 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.yasinkanli.librarymanagement.dto.LoanRequestDto;
-import org.yasinkanli.librarymanagement.dto.LoanResponseDto;
+import org.yasinkanli.librarymanagement.dto.LoanDto;
+import org.yasinkanli.librarymanagement.dto.LoanDto;
 import org.yasinkanli.librarymanagement.entity.Book;
 import org.yasinkanli.librarymanagement.entity.Loan;
 import org.yasinkanli.librarymanagement.entity.Member;
@@ -39,7 +39,7 @@ public class LoanServiceImpl implements LoanService {
     private int maxLoansPerMember;
 
     @Override
-    public LoanResponseDto createLoan(LoanRequestDto dto) {
+    public LoanDto createLoan(LoanDto dto) {
         long existing = loanRepository.countByMemberId(dto.getMemberId());
         if (existing >= maxLoansPerMember) {
             throw new BusinessException(
@@ -58,25 +58,35 @@ public class LoanServiceImpl implements LoanService {
         loan.setDueDate(LocalDateTime.now().plusDays(maxLoansPerMember));
 
         Loan saved = loanRepository.save(loan);
-        return mapper.map(saved, LoanResponseDto.class);
+        LoanDto result = mapper.map(saved, LoanDto.class);
+        if (result.getBook() != null && result.getBook().getAuthors() != null) {
+            result.getBook().getAuthors().forEach(author -> author.setBooks(null));
+        }
+        return result;
     }
 
     @Override
-    public LoanResponseDto getById(Long id) {
+    public LoanDto getById(Long id) {
         Loan loan = loanRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: " + id));
-        return mapper.map(loan, LoanResponseDto.class);
+        return mapper.map(loan, LoanDto.class);
     }
 
     @Override
-    public List<LoanResponseDto> listAll() {
-        return mapper.mapList(loanRepository.findAll(), LoanResponseDto.class);
+    public List<LoanDto> listAll() {
+        List<LoanDto> list = mapper.mapList(loanRepository.findAll(), LoanDto.class);
+        list.forEach(loan -> {
+            if (loan.getBook() != null && loan.getBook().getAuthors() != null) {
+                loan.getBook().getAuthors().forEach(author -> author.setBooks(null));
+            }
+        });
+        return list;
     }
 
     @Override
-    public List<LoanResponseDto> listByMember(Long memberId) {
+    public List<LoanDto> listByMember(Long memberId) {
         List<Loan> loans = loanRepository.findByMemberId(memberId);
-        return mapper.mapList(loans, LoanResponseDto.class);
+        return mapper.mapList(loans, LoanDto.class);
     }
 
     @Override

@@ -3,8 +3,8 @@ package org.yasinkanli.librarymanagement.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yasinkanli.librarymanagement.dto.MemberRequestDto;
-import org.yasinkanli.librarymanagement.dto.MemberResponseDto;
+import org.yasinkanli.librarymanagement.dto.MemberDto;
+import org.yasinkanli.librarymanagement.dto.MemberDto;
 import org.yasinkanli.librarymanagement.entity.Member;
 import org.yasinkanli.librarymanagement.entity.MembershipCard;
 import org.yasinkanli.librarymanagement.mapper.GenericMapper;
@@ -23,42 +23,42 @@ public class MemberServiceImpl implements MemberService {
     private GenericMapper mapper;
 
     @Override
-    public MemberResponseDto create(MemberRequestDto dto) {
+    public MemberDto create(MemberDto dto) {
         Member member = new Member();
         member.setName(dto.getName());
         MembershipCard card = new MembershipCard();
         card.setCardNumber(dto.getCardNumber());
         member.setCard(card);
         Member saved = memberRepository.save(member);
-        return mapper.map(saved, MemberResponseDto.class);
+        return mapper.map(saved, MemberDto.class);
     }
 
     @Override
-    public MemberResponseDto getById(Long id) {
+    public MemberDto getById(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + id));
-        return mapper.map(member, MemberResponseDto.class);
+        return mapper.map(member, MemberDto.class);
     }
 
     @Override
-    public List<MemberResponseDto> listAll() {
-        return mapper.mapList(memberRepository.findAll(), MemberResponseDto.class);
+    public List<MemberDto> listAll() {
+        return mapper.mapList(memberRepository.findAll(), MemberDto.class);
     }
 
     @Override
-    public List<MemberResponseDto> searchByName(String name) {
+    public List<MemberDto> searchByName(String name) {
         List<Member> found = memberRepository.findByNameContainingIgnoreCase(name);
-        return mapper.mapList(found, MemberResponseDto.class);
+        return mapper.mapList(found, MemberDto.class);
     }
 
     @Override
-    public MemberResponseDto update(Long id, MemberRequestDto dto) {
+    public MemberDto update(Long id, MemberDto dto) {
         Member existing = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + id));
         existing.setName(dto.getName());
         existing.getCard().setCardNumber(dto.getCardNumber());
         Member updated = memberRepository.save(existing);
-        return mapper.map(updated, MemberResponseDto.class);
+        return mapper.map(updated, MemberDto.class);
     }
 
     @Override
